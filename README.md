@@ -594,7 +594,7 @@ For licensing, partnership, or integration inquiries contact:
 
 AI Systems Engineer · Music Intelligence Architect · Professional DJ · Violinist
 
-*New York, NY · Dhimix Entertainment LLC*
+*New York, NY · Founder, DHIMIX AI*
 
 </div>
 
