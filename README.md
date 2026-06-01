@@ -114,7 +114,7 @@ That gap — between how algorithms think about music and how musicians think ab
 | Confidence is hidden | Confidence is a first-class output — HIGH / MEDIUM / LOW on every result |
 | No fallback transparency | Honest degradation messaging on low-signal inputs |
 
-The core architecture is rule-based and auditable by design. The scoring weights, mode strategies, and evidence retrieval are not black-box model parameters — they are explicit coefficients that reflect real music expertise and can be read, reviewed, and understood.
+The core architecture is rule-based and auditable by design. Scoring is driven by explicit, deterministic logic that reflects real music expertise — not black-box model parameters. The system's reasoning is surfaced to the user at every step rather than buried inside gradient weights.
 
 ---
 
@@ -244,10 +244,10 @@ This is not a story about a software engineer who discovered music. It is a stor
 │  RETRIEVAL     │  Jamendo API (primary) · R2 Cloud Showcase (secondary) │
 │                │  Genre filter · Top-K candidates · Evidence attachment │
 ├────────────────┼────────────────────────────────────────────────────────┤
-│  SCORING       │  CompositeScore = Σ(wᵢ × featureᵢ) − DiversityPenalty │
-│                │  10 dimensions · weights vary by scoring mode          │
+│  SCORING       │  Proprietary composite scoring engine                  │
+│                │  10 dimensions · mode-weighted · Music DNA bias        │
 ├────────────────┼────────────────────────────────────────────────────────┤
-│  CONFIDENCE    │  f(normalized_score × 0.8 + retrieval_bonus)           │
+│  CONFIDENCE    │  Proprietary confidence model · evidence-calibrated    │
 │                │  HIGH ≥ 80% · MEDIUM 60–79% · LOW < 60%               │
 ├────────────────┼────────────────────────────────────────────────────────┤
 │  RANKING       │  Sort DESC · Deduplicate artists/genres · Select top-N │
@@ -313,33 +313,27 @@ NORMALIZATION
   │
   ▼
 CATALOG RETRIEVAL            [Jamendo API + R2 Cloud Showcase]
-  Jamendo: genre-tagged fetch (primary catalog)
-  R2: curated collection (reviewed/licensed tracks only)
-  Knowledge-note attachment (tag-overlap retrieval from 6 indexed notes)
+  Primary and secondary catalog fetch with genre-aware filtering
+  Knowledge-base evidence attachment via tag-overlap matching
   │
   ▼
-COMPOSITE SCORING            [10-dimension weighted scoring]
-  + w_genre          if song.genre == user.genre (exact match)
-  + w_mood           if song.mood == user.mood (exact match)
-  + max(0, w_energy  − |energy_diff| × w_energy × 2)   (linear proximity)
-  + acousticness     × w_acoustic  (preference signal)
-  + popularity_score × w_popularity
-  + decade_score     × w_decade
-  + mood_tag_score   × w_mood_tag
-  + instrumentalness_score · liveness_score · speechiness_score
-  + knowledge_note_boost   (tag-overlap evidence retrieval)
-  + feedback_bias          (Music DNA signal from past interactions)
-  − (artist_repeats × 1.1 + genre_repeats × 0.35)  (diversity penalty)
+COMPOSITE SCORING            [Proprietary multi-factor engine]
+  Candidate tracks evaluated across 10 signal dimensions:
+  genre alignment · mood match · energy proximity · acoustic profile
+  temporal context · catalog metadata signals · Music DNA bias
+  Scoring weights shift per mode (Genre-First / Mood-First / Energy-Focused)
+  Diversity constraints applied to maximize catalog breadth
   │
   ▼
-CONFIDENCE CALCULATION
-  normalized = score / max_possible_score
-  confidence = normalized × 0.8 + min(0.2, retrieval_hits × 0.1)
+CONFIDENCE CALCULATION       [Proprietary confidence model]
+  Combines normalized signal strength with knowledge-base evidence
+  retrieval into a calibrated per-recommendation confidence estimate
   HIGH ≥ 80% · MEDIUM 60–79% · LOW < 60%
   │
   ▼
 RANKING + DEDUPLICATION
-  Sort DESC · Max 2 per artist/genre · Select top-N
+  Candidates ranked by composite score · artist + genre diversity
+  constraints applied · top-N selected
   │
   ▼
 EXPLANATION GENERATION
@@ -361,78 +355,17 @@ OUTPUT → Recommendation cards + streaming pipeline
 
 ---
 
-## Scoring Implementation
+## Scoring Architecture
 
-The full implementation lives in `src/recommender.py` (Python) and `ui/src/lib/scoring.ts` (TypeScript port). Both are exact equivalents. The TypeScript version runs client-side for real-time re-ranking.
+DHIMIX AI's recommendation engine is a proprietary multi-factor scoring system that combines real-world music expertise with explicit AI engineering principles.
 
-```python
-def _mode_weights(mode: str) -> dict:
-    """Return absolute scoring weights for the selected mode."""
-    strategies = {
-        "genre-first": {
-            "genre": 3.2, "mood": 2.2,  "energy": 1.8, "acoustic": 1.0,
-            "popularity": 0.9, "decade": 0.6, "mood_tag": 1.2,
-            "instrumentalness": 0.6, "liveness": 0.4, "speechiness": 0.4,
-        },
-        "mood-first": {
-            "genre": 2.0, "mood": 3.3,  "energy": 1.6, "acoustic": 1.1,
-            "popularity": 0.8, "decade": 0.5, "mood_tag": 1.5,
-            "instrumentalness": 0.6, "liveness": 0.5, "speechiness": 0.4,
-        },
-        "energy-focused": {
-            "genre": 1.6, "mood": 1.8,  "energy": 3.6, "acoustic": 0.9,
-            "popularity": 0.7, "decade": 0.4, "mood_tag": 1.0,
-            "instrumentalness": 0.5, "liveness": 0.5, "speechiness": 0.5,
-        },
-    }
-    return strategies.get(mode, strategies["genre-first"])
+The engine evaluates candidate tracks across multiple signal dimensions — including genre alignment, mood match, energy proximity, acoustic profile, temporal context, and catalog metadata — weighted differently per scoring mode. Three modes (**Genre-First**, **Mood-First**, **Energy-Focused**) shift the scoring emphasis to match different listener contexts and intentions.
 
+**Music DNA** applies a personalization layer derived from prior listening behavior and explicit feedback, progressively biasing results toward demonstrated preferences across sessions.
 
-def score_song(user_prefs: dict, song: dict) -> tuple[float, list[str]]:
-    """Score one song against user preferences. Returns (score, reasons)."""
-    weights = _mode_weights(user_prefs.get("mode", "genre-first"))
-    score = 0.0
+**Confidence scoring** combines normalized signal strength with knowledge-base evidence retrieval into a calibrated confidence estimate — surfaced as HIGH / MEDIUM / LOW on every result.
 
-    # Genre — exact match
-    if song["genre"] == user_prefs.get("genre"):
-        score += weights["genre"]
-
-    # Mood — exact match
-    if song["mood"] == user_prefs.get("mood"):
-        score += weights["mood"]
-
-    # Energy — linear proximity (penalizes deviation from target)
-    energy_diff = abs(song["energy"] - user_prefs["energy"])
-    score += max(0.0, weights["energy"] - energy_diff * weights["energy"] * 2)
-
-    # Acoustic preference signal
-    likes_acoustic = user_prefs.get("likes_acoustic")
-    if likes_acoustic is True:
-        score += song["acousticness"] * weights["acoustic"]
-    elif likes_acoustic is False:
-        score += (1 - song["acousticness"]) * weights["acoustic"]
-
-    # Popularity, decade, mood_tag, instrumentalness, liveness, speechiness
-    # all follow the same linear proximity pattern (see src/recommender.py)
-    ...
-    return score, reasons
-
-
-def recommend_songs(user_prefs: dict, songs: list, k: int = 5) -> list:
-    """Score all songs, apply diversity penalty, return top-k."""
-    # Penalty per repeat: artist × 1.1, genre × 0.35
-    # Applied greedily during selection to maximize catalog diversity
-    ...
-
-
-def _confidence_from_score(score: float, max_score: float, retrieval_hits: int) -> float:
-    """Confidence from normalized score strength + evidence retrieval bonus."""
-    normalized = max(0.0, min(1.0, score / max_score))
-    retrieval_bonus = min(0.2, 0.1 * retrieval_hits)
-    return round(max(0.0, min(1.0, normalized * 0.8 + retrieval_bonus)), 3)
-```
-
-**Max possible scores by mode:** `genre-first: 12.3` · `mood-first: 12.3` · `energy-focused: 11.0`
+The architecture prioritizes auditability at the interface layer: users see score, confidence tier, evidence tags, and structured reasoning on every recommendation. The underlying scoring coefficients and calibration are proprietary.
 
 ---
 
@@ -514,14 +447,12 @@ dhimix-ai/
 │       ├── jamendo.ts            # Jamendo API client
 │       └── r2.ts                 # Cloudflare R2 utilities
 ├── src/                          # Python scoring engine + evaluation harness
-│   ├── recommender.py            # Core scoring engine (source of truth)
-│   ├── main.py                   # CLI entrypoint
+│   ├── recommender.py            # Recommendation engine — scoring · ranking · confidence
+│   ├── main.py                   # CLI entrypoint + preference normalization
 │   └── evaluate.py               # Reliability harness — 4 test profiles
 ├── tests/                        # pytest test suite — 4/4 passed
 ├── docs/                         # Whitepaper · Presentation · Engineering Journey
-├── .claude/                      # AI-assisted development configuration
-├── CLAUDE.md                     # Agent instructions
-└── model_card.md                 # Ethics · AI collaboration · reflection
+└── model_card.md                 # Responsible AI · ethics · AI-assisted development
 ```
 
 ---
