@@ -123,6 +123,18 @@ Each mode applies a specialized recommendation profile built around real-world D
 
 ---
 
+## Launch History
+
+| Date | Milestone |
+|------|-----------|
+| April 2026 | CodePath AI Engineering Capstone |
+| June 2026 | Public Platform Launch |
+| June 2026 | LinkedIn Product Announcement |
+| June 2026 | Hacker News Launch |
+| June 2026 | DJ Mode Release |
+
+---
+
 ## About the Builder
 
 **DJ DHIMIX** — AI Systems Engineer · Professional DJ · Violinist
