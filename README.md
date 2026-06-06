@@ -145,7 +145,7 @@ Runner-Up, CUNY AI Innovation Challenge Spring 2026
 | | |
 |--|--|
 | **Live Platform** | [dhimix-ai.vercel.app](https://dhimix-ai.vercel.app) |
-| **Email** | [dhimyjean@gmail.com](mailto:dhimyjean@gmail.com) |
+| **Email** | [dhimixai@gmail.com](mailto:dhimixai@gmail.com) |
 | **LinkedIn** | [linkedin.com/in/dhimy-jean](https://linkedin.com/in/dhimy-jean) |
 
 ---
@@ -169,7 +169,7 @@ Copyright © 2026 Dhimy Jean. All rights reserved.
 
 The DHIMIX AI name, branding, architecture, recommendation methodology, and associated content are the exclusive property of Dhimy Jean. Unauthorized commercial use, reproduction, or distribution is prohibited.
 
-Commercial use requires written permission. Contact [dhimyjean@gmail.com](mailto:dhimyjean@gmail.com).
+Commercial use requires written permission. Contact [dhimixai@gmail.com](mailto:dhimixai@gmail.com).
 
 ---
 
@@ -179,7 +179,7 @@ Commercial use requires written permission. Contact [dhimyjean@gmail.com](mailto
 
 **[→ Try It Free](https://dhimix-ai.vercel.app)**
 
-[![Email](https://img.shields.io/badge/Email-dhimyjean%40gmail.com-7C3AED?style=flat-square)](mailto:dhimyjean@gmail.com)
+[![Email](https://img.shields.io/badge/Email-dhimixai%40gmail.com-7C3AED?style=flat-square)](mailto:dhimixai@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-dhimy--jean-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/dhimy-jean)
 [![GitHub](https://img.shields.io/badge/GitHub-dhimysoft-181717?style=flat-square&logo=github)](https://github.com/dhimysoft)
 
