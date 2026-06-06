@@ -87,7 +87,7 @@ That gap — between how algorithms think about music and how musicians think ab
 
 DJ Mode transforms DHIMIX AI from a listener recommendation engine into a DJ-inspired music discovery experience.
 
-Available modes:
+Select your set style and let the AI build your session:
 
 | Mode | Style |
 |------|-------|
@@ -98,7 +98,7 @@ Available modes:
 | 🎤 Open Format | Crowd-friendly rotation across genres |
 | 💿 DJ Dhimix Picks | Hand-selected by DJ Dhimix |
 
-Each mode overrides standard recommendation preferences and applies specialized DJ-oriented scoring profiles designed around real-world music selection strategies.
+Each mode applies a specialized recommendation profile built around real-world DJ music selection strategies.
 
 ---
 
