@@ -55,12 +55,12 @@ That gap — between how algorithms think about music and how musicians think ab
 | AI Music Recommendations | ✅ Live |
 | Explainable scoring — weights, confidence, reasoning | ✅ Live |
 | 3 Scoring Modes — Genre-First · Mood-First · Energy-Focused | ✅ Live |
-| 🎧 DJ Blend — cross-genre dance set mode | ✅ Live |
+| 🎧 DJ Mode — Radio · Festival EDM · House · Latin · Open Format · DJ Dhimix Picks | ✅ Live |
 | Jamendo Creative Commons catalog | ✅ Live |
 | Cloud Showcase — curated streaming collection | ✅ Live |
 | Music DNA — local preference learning | ✅ Live |
 | Favorites & Listening History | ✅ Live |
-| Session Purpose — Study · Workout · Creative · DJ Blend | ✅ Live |
+| Session Purpose — Study · Workout · Creative · DJ Mode | ✅ Live |
 | License Center — per-track licensing transparency | ✅ Live |
 | Spotify enrichment | 🔬 Preview |
 | Apple Music · YouTube Music · SoundCloud | 🛠 In Development |
@@ -80,6 +80,25 @@ That gap — between how algorithms think about music and how musicians think ab
 
 ### Streaming Player
 ![Player](./assets/streaming-player.png)
+
+---
+
+## DJ Mode
+
+DJ Mode transforms DHIMIX AI from a listener recommendation engine into a DJ-inspired music discovery experience.
+
+Available modes:
+
+| Mode | Style |
+|------|-------|
+| 🎵 DJ Radio | Crowd favorites and high-energy hits |
+| 🎪 Festival EDM | Big-room energy and euphoric drops |
+| 🏠 House | Deep grooves and dance-floor flow |
+| 🌴 Latin DJ | Reggaeton and Latin dance essentials |
+| 🎤 Open Format | Crowd-friendly rotation across genres |
+| 💿 DJ Dhimix Picks | Hand-selected by DJ Dhimix |
+
+Each mode overrides standard recommendation preferences and applies specialized DJ-oriented scoring profiles designed around real-world music selection strategies.
 
 ---
 
@@ -127,6 +146,18 @@ Runner-Up, CUNY AI Innovation Challenge Spring 2026
 - [DMCA](https://dhimix-ai.vercel.app/legal/dmca)
 
 Source-available. Commercial use requires written permission. See [LICENSE](LICENSE).
+
+---
+
+## Intellectual Property
+
+DHIMIX AI is an original software platform developed by Dhimy Jean.
+
+Copyright © 2026 Dhimy Jean. All rights reserved.
+
+The DHIMIX AI name, branding, architecture, recommendation methodology, and associated content are the exclusive property of Dhimy Jean. Unauthorized commercial use, reproduction, or distribution is prohibited.
+
+Commercial use requires written permission. Contact [dhimyjean@gmail.com](mailto:dhimyjean@gmail.com).
 
 ---
 
